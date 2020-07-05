@@ -33,19 +33,4 @@ final class MailerProvider implements MailerProviderInterface
             ['subject' => $subject, 'message' => $message]
         );
     }
-
-    private function confirmTemplate(): Template
-    {
-        return new Template(
-            1,
-            '[customer:first_name] [customer:last_name] Votre compte a bien été crée',
-            "
-Bonjour [customer:first_name],
-
-Merci d'avoir créé votre compte sur notre site vous pouvez maintenant accéder à votre espace en cliquant ici:
-[link:my-account]
-
-Bien cordialement,
-");
-    }
 }

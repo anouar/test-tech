@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace App\Utils;
 
 use App\Entity\Customer;
+use App\Entity\Template;
 
 final class TemplateManager
 {
@@ -15,11 +17,12 @@ final class TemplateManager
             throw new \RuntimeException('no tpl given');
         }
 
-        $replaced = clone($tpl);
-        $replaced->subject = $this->computeText($replaced->subject, $data);
-        $replaced->content = $this->computeText($replaced->content, $data);
-
-        return $replaced;
+        $subject = $this->computeText($tpl->getSubject(), $data);
+        $content = $this->computeText($tpl->getContent(), $data);
+        return [
+            'subject' => $subject,
+            'content' => $content
+        ];
     }
 
     private function computeText($text, array $data)
@@ -30,6 +33,7 @@ final class TemplateManager
 
 
         if ($data['customer'] && $data['customer'] instanceof Customer) {
+
             /** @var Customer $customer */
             $customer = $data['customer'];
             $containsFirstname = strpos($text, '[customer:first_name]');
@@ -63,4 +67,5 @@ final class TemplateManager
 
         return $text;
     }
+
 }

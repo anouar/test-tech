@@ -8,11 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
- *      itemOperations={},
  *      collectionOperations = {
  *          "post"={
  *              "method"="POST",
- *              "path"="/v1/templates.{_format}",
+ *              "path"="/v1/templates",
  *          },
  *      },
  * )
