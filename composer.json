@@ -28,6 +28,7 @@
         "symfony/intl": "4.4.*",
         "symfony/messenger": "4.4.*",
         "symfony/monolog-bundle": "^3.3",
+        "symfony/swiftmailer-bundle": "^3.4",
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {

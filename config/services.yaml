@@ -16,12 +16,18 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Event,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Event,Client, Kernel.php}'
         autoconfigure: true
         autowire: true
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    #MailerProvider
+    app.mailer.provider:
+        class: App\Provider\MailerProvider
+        arguments: [ "@doctrine.orm.entity_manager", "@mailer" ]
+
 
     # Converter
     App\Converter\IriConverter:
