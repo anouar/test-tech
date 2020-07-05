@@ -43,7 +43,9 @@ Le tout en faisant en sorte qu’elle respecte les standard utilisé dans le pro
 - Installation de swiftmailer pour l'envoi de mail 
 - Suppression de la récursiviter ainsi que l'injection de l'Interface Client\MailerInterface  
  => problème d'injection de dépendance "circular reference detected" vu que la méthode sendMail() existe aussi dans l'interface Provider\MailerProviderInterface 
-- injection du service MailerProvider "app.mailer.provider dans service.yaml" dans la classe RegisterPersister pour l'utiliser dans l'envoi de Mail
+- Injection du service MailerProvider "app.mailer.provider dans service.yaml" dans la classe RegisterPersister pour l'utiliser dans l'envoi de Mail
+- j'ai fait le test de l'envoie du mail avec la configuration de mon compte gmail dans le fichier .env:
+MAILER_URL="gmail://anouar.souid.q3@gmail.com:**************@localhost"
 ```
 3°) Les Erreurs sont corrigés 
 ## Installation:
