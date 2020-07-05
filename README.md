@@ -30,7 +30,22 @@ Le tout en faisant en sorte qu’elle respecte les standard utilisé dans le pro
     
 3°) Corriger toutes les erreurs qui restent
 
-
+#Explications :
+1°) besoin 1
+```bash
+- Installation des bundles DoctrineMigrationsBundle et MakerBundle pour faciliter la gestion de la base de données
+- Ajout de l'entité Template pour pouvoir gérer les templates dont le template "confirmation_001" 
+- suppression du class Utils\Template et le remplacer par l'entité Template dans TemplateManager
+- Suppression de la méthode confirmTemplate() dans MailerProvider : il est recommender pour les templates mail d'utilser soit des fichiers twig soit une table 
+```
+2°) besoin 2 
+```bash
+- Installation de swiftmailer pour l'envoi de mail 
+- Suppression de la récursiviter ainsi que l'injection de l'Interface Client\MailerInterface  
+ => problème d'injection de dépendance "circular reference detected" vu que la méthode sendMail() existe aussi dans l'interface Provider\MailerProviderInterface 
+- injection du service MailerProvider "app.mailer.provider dans service.yaml" dans la classe RegisterPersister pour l'utiliser dans l'envoi de Mail
+```
+3°) Les Erreurs sont corrigés 
 ## Installation:
 
 ```bash
