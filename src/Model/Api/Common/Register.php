@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={},
  *     collectionOperations={
  *         "register"={
- *             "path"="/register",
+ *             "path"="/v1/register",
  *             "method"="post",
  *             "swagger_context"={
  *                 "summary"="Register a new Customer.",
@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                     "201"={
  *                         "description"="Customer resource created",
  *                         "schema"={
- *                             "$ref"="#/definitions/RegisterResult"
+ *                             "$ref"="#/definitions/Register"
  *                         }
  *                     },
  *                     "400"={
