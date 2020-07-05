@@ -2,35 +2,44 @@
 
 namespace App\Provider;
 
-use App\Client\MailerInterface;
-use App\Utils\Template;
+use App\Entity\Template;
+
 use App\Utils\TemplateManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class MailerProvider implements MailerProviderInterface
 {
-    private MailerInterface $client;
-
-    public function __construct(MailerInterface $client)
+    private $em;
+    private $mailer;
+    public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer)
     {
-        $this->client = $client;
+        $this->em = $em;
+        $this->mailer = $mailer;
     }
 
     public function sendEmail(string $templateId, string $destination, array $data)
     {
         $templateManager = new TemplateManager();
+        $repository =  $this->em->getRepository(Template::class);
+
+        $template =  $repository->findOneBy(['templateId' => $templateId]);
+
         if ($templateId === 'confirmation_001') {
-            $tpl = $templateManager->getTemplateComputed($this->confirmTemplate(), $data);
-            $subject = $tpl->subject;
-            $message = $tpl->content;
+            $tpl = $templateManager->getTemplateComputed($template, $data);
+            $subject = $tpl['subject'];
+            $content = $tpl['content'];
         } else {
             $subject = '';
-            $message = '';
+            $content = '';
         }
+        $message = (new \Swift_Message($subject))
+            ->setFrom('anouar.souid.q3@gmail.com')
+            ->setTo($destination)
+            ->setBody(
+                $content,'text/html'
+            )
+        ;
+        $this->mailer->send($message);
 
-        $this->client->sendEmail(
-            $templateId,
-            $destination,
-            ['subject' => $subject, 'message' => $message]
-        );
     }
 }

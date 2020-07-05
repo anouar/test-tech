@@ -7,6 +7,7 @@ use App\Encrypter\EncrypterInterface;
 use App\Message\Domain\Customer\RegisterCustomer;
 use App\Model\Api\Common\Register;
 use App\Model\Api\Common\RegisterResult;
+use App\Provider\MailerProvider;
 use App\Utils\Clock\ClockInterface;
 use App\Repository\CustomerRepositoryInterface;
 use Ramsey\Uuid\Uuid;
@@ -20,17 +21,22 @@ final class RegisterPersister implements DataPersisterInterface
     private EncrypterInterface $encrypter;
     private ClockInterface $clock;
     private CustomerRepositoryInterface $customerRepository;
+    /** @var MailerProvider */
+    private $mailerProvider;
+
 
     public function __construct(
         MessageBusInterface $messageBus,
         EncrypterInterface $encrypter,
         CustomerRepositoryInterface $customerRepository,
-        ClockInterface $clock
+        ClockInterface $clock,
+        MailerProvider $mailerProvider
     ) {
         $this->messageBus = $messageBus;
         $this->encrypter = $encrypter;
         $this->customerRepository = $customerRepository;
         $this->clock = $clock;
+        $this->mailerProvider = $mailerProvider;
     }
 
     public function supports($data): bool
@@ -57,7 +63,7 @@ final class RegisterPersister implements DataPersisterInterface
         );
 
         $customer = $this->customerRepository->getByEmail($data->getEmail());
-
+        $this->mailerProvider->sendEmail('confirmation_001', $customer->getEmail(), ['customer'=>$customer]);
         return new RegisterResult(
             $customer->getId(),
             $customer->getEmail()
